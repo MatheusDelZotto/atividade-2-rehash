@@ -1,42 +1,24 @@
 import java.util.Random;
 
-/*
- * Atividade 2 - Implementação do Re Hash
- *
- * Tabela hash (matriz) de 100 posições com endereçamento aberto.
- * Função hash:  h(k) = k % 100
- * Re hash:      rh(p) = (p + 1) % 100   (re hash linear)
- *
- * Tentamos inserir 100 elementos aleatórios (seed = 1090). Quando a matriz
- * atinge 90% de ocupação, o re hash bloqueia a inserção de novos elementos.
- *
- * Restrição: sem comandos prontos da API do Java (apenas if, else, for,
- * while e Random). System.out.println é usado somente para exibir resultados.
- */
 public class HashRehash {
-
     static final int TAMANHO = 100;
     static final int QTD_ELEMENTOS = 100;
-    static final int LIMITE_OCUPACAO = 90; // 90% de 100 posições
+    static final int LIMITE_OCUPACAO = 90;
     static final int SEED = 1090;
-    static final int VALOR_MAXIMO = 1000;  // números gerados entre 0 e 999
+    static final int VALOR_MAXIMO = 1000;
     static final int VAZIO = -1;
 
     static int[] tabela = new int[TAMANHO];
     static int ocupados = 0;
 
-    // Função hash
     static int hash(int chave) {
         return chave % TAMANHO;
     }
 
-    // Função de re hash: próxima posição a ser testada após uma colisão
     static int rehash(int posicao) {
         return (posicao + 1) % TAMANHO;
     }
 
-    // Insere a chave e retorna quantas colisões ocorreram até achar posição livre.
-    // Retorna -1 se o re hash bloqueou a inserção (matriz com 90% de ocupação).
     static int inserir(int chave) {
         if (ocupados >= LIMITE_OCUPACAO) {
             return -1;
@@ -55,8 +37,6 @@ public class HashRehash {
         return colisoes;
     }
 
-    // Busca a chave e retorna a posição onde está, ou -1 se não encontrada.
-    // Guarda em tentativasBusca quantas posições foram visitadas.
     static int tentativasBusca = 0;
 
     static int buscar(int chave) {
@@ -80,7 +60,6 @@ public class HashRehash {
             tabela[i] = VAZIO;
         }
 
-        // Gera 100 números aleatórios distintos
         int[] elementos = new int[QTD_ELEMENTOS];
         int gerados = 0;
         while (gerados < QTD_ELEMENTOS) {
@@ -97,7 +76,6 @@ public class HashRehash {
             }
         }
 
-        // Inserção
         int[] colisoesPorElemento = new int[QTD_ELEMENTOS];
         int totalColisoes = 0;
         int inseridos = 0;
@@ -121,7 +99,6 @@ public class HashRehash {
             }
         }
 
-        // Matriz final
         System.out.println();
         System.out.println("===== MATRIZ FINAL =====");
         for (int i = 0; i < TAMANHO; i++) {
@@ -132,15 +109,12 @@ public class HashRehash {
             }
         }
 
-        // Resumo
         System.out.println();
         System.out.println("===== RESULTADOS =====");
         System.out.println("Elementos inseridos: " + inseridos);
         System.out.println("Elementos bloqueados: " + bloqueados);
         System.out.println("Total de colisões na inserção: " + totalColisoes);
 
-        // 3 elementos que mais colidiram (seleção manual, sem ordenação pronta).
-        // Em caso de empate, fica o que foi inserido primeiro.
         int[] top = new int[3];
         boolean[] escolhido = new boolean[QTD_ELEMENTOS];
         for (int t = 0; t < 3; t++) {
@@ -163,7 +137,6 @@ public class HashRehash {
                     + " com " + colisoesPorElemento[top[t]] + " colisões");
         }
 
-        // Posições livres
         System.out.println();
         System.out.print("Posições livres na matriz: ");
         int livres = 0;
@@ -179,7 +152,6 @@ public class HashRehash {
         System.out.println();
         System.out.println("Total de posições livres: " + livres);
 
-        // Teste de busca com os 3 elementos que mais colidiram
         System.out.println();
         System.out.println("===== TESTE DE BUSCA =====");
         for (int t = 0; t < 3; t++) {
